@@ -1,0 +1,57 @@
+---
+  - name: ensures /srv/docker/gitlab/ dir exists
+    file: path=/srv/docker/gitlab/ state=directory
+
+  - name: pull gitlab postgresql
+    docker_image:
+      name: sameersbn/postgresql
+
+  - name: pull gitlab redis
+    docker_image:
+      name: sameersbn/redis
+
+  - name: pull gitlab container
+    docker_image:
+      name: sameersbn/gitlab
+
+  - name: run the postgresql container
+    docker_container:
+      name: gitlab-postgresql
+      image: sameersbn/postgresql
+      state: started
+      volumes:
+        - /srv/docker/gitlab/postgresql:/var/lib/postgresql
+      env:
+        DB_NAME: gitlabhq_production
+        DB_USER: gitlab
+        DB_PASS: password
+        DB_EXTENSION: pg_trgm
+
+  - name: run the redis container
+    docker_container:
+      name: gitlab-redis
+      image: sameersbn/redis
+      state: started
+      volumes:
+        - /srv/docker/gitlab/redis:/var/lib/redis
+
+  - name: run the gitlab container
+    docker_container:
+      name: gitlab
+      image: sameersbn/gitlab
+      state: started
+      ports:
+        - "80:80"
+        - "2222:22"
+      links:
+        - "gitlab-postgresql:postgresql"
+        - "gitlab-redis:redisio"
+      env:
+        GITLAB_PORT: 80
+        GITLAB_SSH_PORT: 2222
+        GITLAB_SECRETS_DB_KEY_BASE: V1XoG9ETlDi4tvU9gi6lKTVz21V2MiGvaWx1O18lmw10C6tD7zAfDuAFLbsPTx2F
+        GITLAB_SECRETS_SECRET_KEY_BASE: etLbsr35qhzptuv4kLBP6uzY21Rj1I3nhrfRvYHWb6HpXdUFwDS9jeIWe58k6yUL
+        GITLAB_SECRETS_OTP_KEY_BASE: irluXUhnzCYz0kcugJKpmpTQJLd0lT26n7iDJ1mGeR2YROyJlFO9dA1oenJ3J2Hq
+        GITLAB_HOST: git.htag.fr
+      volumes:
+        - /srv/docker/gitlab/gitlab:/home/git/data

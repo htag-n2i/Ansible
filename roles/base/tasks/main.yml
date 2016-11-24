@@ -1,0 +1,25 @@
+---
+  - name: "Create htag user"
+    become: true
+    user: name=htag password="$6$OUEPlpOPzZdAx$CELqkKZe.eKjKGRC5NOwWIo88RaAbwJA0AbFQ3L45f2X4u/OmbkDowszc//opntOsaeLnnQdwnE1mV59gFMqL."
+
+  - name: Disallow password authentication
+    become: true
+    lineinfile: dest=/etc/ssh/sshd_config
+                regexp="^PasswordAuthentication"
+                line="PasswordAuthentication no"
+                state=present
+    notify: Restart ssh
+
+  - name: Disallow root SSH access
+    become: true
+    lineinfile: dest=/etc/ssh/sshd_config
+                regexp="^PermitRootLogin"
+                line="PermitRootLogin no"
+                state=present
+    notify: Restart ssh
+
+  - name: Update apt cache
+    become: true
+    apt:
+      update_cache: yes

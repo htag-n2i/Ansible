@@ -1,0 +1,19 @@
+---
+  # - name: Apply base configuration
+  #   hosts: all
+  #   remote_user: john
+  #   roles:
+  #     - base
+  #
+  # - name: Install docker
+  #   hosts: builders
+  #   remote_user: john
+  #   become: true
+  #   roles:
+  #     - {role: mbasanta.pip, pip_install_method: installer}
+  #     - {role: mongrelion.docker, dockerpy: yes}
+
+  - name: Install gitlab
+    hosts: gitlab
+    roles:
+      - gitlab
