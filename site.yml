@@ -17,3 +17,8 @@
     hosts: gitlab
     roles:
       - gitlab
+
+  - name: Install registry
+    hosts: registry
+    roles:
+      - registry

@@ -1,5 +1,6 @@
 ---
   - name: ensures /srv/docker/gitlab/ dir exists
+    become: true
     file: path=/srv/docker/gitlab/ state=directory
 
   - name: pull gitlab postgresql
