@@ -1,0 +1,7 @@
+gitlab_runner_registration_token: 'JbsRevBPpkheuMXxxPyL'
+gitlab_runner_coordinator_url: 'http://git.htag.fr/ci'
+gitlab_runner_description: 'Example GitLab Runner'
+gitlab_runner_tags:
+  - node
+  - ruby
+gitlab_runner_executor: shell

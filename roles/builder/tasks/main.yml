@@ -1,0 +1,21 @@
+---
+  - name: ensures /var/log/htag/ dir exists
+    become: true
+    file:
+      path: /var/log/htag/
+      state: directory
+      mode: u=rwx,g=rwx,o=rwx
+
+  - name: Install deployer
+    become: true
+    template:
+      src: deployer.sh
+      dest: /usr/bin/deployer
+      owner: root
+      mode: u=rw,g=rx,o=rx
+
+  - name: ensure gitlab-runner user can run docker commands
+    user:
+      name: gitlab-runner
+      groups: docker
+      append: yes

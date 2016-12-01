@@ -1,8 +1,11 @@
+[runners]
+run1.htag.fr
+
 [builders]
-dev1.htag.fr
+build1.htag.fr
 
 [gitlab]
-dev1.htag.fr
+run1.htag.fr
 
 [registry]
-dev1.htag.fr
+run1.htag.fr
