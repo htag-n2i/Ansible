@@ -30,6 +30,14 @@
     - reload unit
     - restart docker
 
+- name: ensure initd.d file is present & up to date
+  copy:
+    src: docker
+    dest: /etc/init.d/docker
+  notify:
+    - reload unit
+    - restart docker
+
 - meta: flush_handlers
 
 - name: ensure starts on system boot
