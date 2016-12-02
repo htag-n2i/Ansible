@@ -1,0 +1,10 @@
+[Unit]
+Description=HTag Runner
+Requires=network.target
+After=syslog.target network.target
+[Service]
+Type=idle
+ExecStart=/srv/htag-runner/runner
+User=htagrunner
+PIDFile=/srv/htag-runner/runner.pid
+Environment="PORT=:5001"

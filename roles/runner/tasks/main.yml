@@ -1,0 +1,48 @@
+---
+  - name: Create Runner folder
+    become: true
+    file:
+      path: /srv/htag-runner/
+      state: directory
+      mode: u=rwx,g=rwx,o=rwx
+
+  - name: Create Runner log folder
+    become: true
+    file:
+      path: /var/log/htag/
+      state: directory
+      mode: u=rwx,g=rwx,o=rwx
+
+  - name: Install runner
+    become: true
+    copy:
+      src: htagrunner
+      dest: /srv/htag-runner/runner
+      mode: u=rwx,g=rx,o=rx
+
+  - name: Install runner script
+    become: true
+    copy:
+      src: runner.sh
+      dest: /usr/bin/runner
+      mode: u=rwx,g=rx,o=rx
+
+  - name: "Create htagrunner user"
+    become: true
+    user: "name=htagrunner"
+
+  - name: ensure htagrunner user can run docker commands
+    user:
+      name: htagrunner
+      groups: docker
+      append: yes
+    
+  - name: Create Runner Unit file
+    template: src=runner.service dest=/usr/lib/systemd/system/runner.service mode=644
+
+  - name: reload systemctl
+    become: true
+    command: systemctl daemon-reload
+
+  - name: Start Runner
+    service: name=runner.service state=started enabled=yes
