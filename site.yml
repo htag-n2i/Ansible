@@ -1,35 +1,35 @@
 ---
-  # - name: Apply base configuration
-  #   hosts: all
-  #   remote_user: john
-  #   roles:
-  #     - base
-  #
-  # - name: Install docker
-  #   hosts: builders:runners
-  #   remote_user: john
-  #   become: true
-  #   roles:
-  #     - {role: mbasanta.pip, pip_install_method: installer}
-  #     - {role: mongrelion.docker, dockerpy: yes}
-  #
-  # - name: Install gitlab
-  #   hosts: gitlab
-  #   roles:
-  #     - gitlab
-  #
-  # - name: Install registry
-  #   hosts: registry
-  #   roles:
-  #     - registry
-  #
-  # - name: Install gitlab-runner
-  #   hosts: builders
-  #   become: true
-  #   vars_files:
-  #     - vars/gitlab-runner.yml
-  #   roles:
-  #     - { role: riemers.gitlab-runner }
+  - name: Apply base configuration
+    hosts: all
+    remote_user: john
+    roles:
+      - base
+
+  - name: Install docker
+    hosts: builders:runners
+    remote_user: john
+    become: true
+    roles:
+      - {role: mbasanta.pip, pip_install_method: installer}
+      - {role: mongrelion.docker, dockerpy: yes}
+
+  - name: Install gitlab
+    hosts: gitlab
+    roles:
+      - gitlab
+
+  - name: Install registry
+    hosts: registry
+    roles:
+      - registry
+
+  - name: Install gitlab-runner
+    hosts: builders
+    become: true
+    vars_files:
+      - vars/gitlab-runner.yml
+    roles:
+      - { role: riemers.gitlab-runner }
 
   - name: Install base builders
     hosts: builders
@@ -43,3 +43,9 @@
     roles:
       - gtrafimenkov.golang
       - runner
+
+  - name: Install proxy
+    hosts: proxies
+    become: true
+    roles:
+      - proxy

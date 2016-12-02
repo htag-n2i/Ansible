@@ -4,6 +4,9 @@ run1.htag.fr
 [builders]
 build1.htag.fr
 
+[proxies]
+proxy1.htag.fr
+
 [gitlab]
 run1.htag.fr
 
